@@ -15,6 +15,10 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface SuccessResponse {
+  success: boolean;
+}
+
 export interface User {
   id: string;
   name: string;

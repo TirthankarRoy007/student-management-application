@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-display bg-background-light dark:bg-background-dark;
+  }
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.login-illustration {
+  background-image: linear-gradient(135deg, rgba(19, 127, 236, 0.8) 0%, rgba(19, 127, 236, 0.4) 100%), url(https://lh3.googleusercontent.com/aida-public/AB6AXuAoaBIMqubAuucTzRoA3UCdJWKL3Do5ilU_bewIbaWeO9QEWiaRdXpFDdkLoR1kT-LSj4u4oSrOeSBBpl2vOH1LCoxK4FlbC_fq2dBDIirlidAS7YqIievZmz-gGlcjA6Dqyjv21rDk_LFgIbxPmA3yFvktT9Vqh8zemvGpVBQOhQYDZWuiXSgtHo72hoImp9nLjVZkAkJb32ZM8y6DLikLITUUVVtksyZ4BpoikN79uT6l9FsCu1fpMx98a7jCKCfsMdTEw6fz5eI3);
+}
