@@ -22,6 +22,27 @@ export default class AuthController {
     }
   }
 
+  static async forgotPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email } = req.body;
+      const result = await AuthService.forgotPassword(email);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async resetPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { token } = req.params;
+      const { password } = req.body;
+      const result = await AuthService.resetPassword(token as string, password);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async me(req: Request, res: Response) {
     res.json(req.user);
   }

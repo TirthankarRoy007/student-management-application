@@ -17,6 +17,8 @@ import {
 import DailyGoal from "./DailyGoal.js";
 import Subject from "./Subject.js";
 import UserSubject from "./UserSubject.js";
+import Task from "./Task.js";
+import TaskActivity from "./TaskActivity.js";
 
 export enum UserRole {
   STUDENT = "student",
@@ -33,7 +35,7 @@ interface UserCreationAttributes {
 
 @Table({
   tableName: "users",
-  timestamps: true,
+  timestamps: false,
 })
 export class User extends Model<User, UserCreationAttributes> {
   @PrimaryKey
@@ -64,6 +66,14 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column(DataType.STRING)
   declare timezone: string;
 
+  @AllowNull(true)
+  @Column(DataType.STRING)
+  declare resetPasswordToken: string | null;
+
+  @AllowNull(true)
+  @Column(DataType.BIGINT)
+  declare resetPasswordExpires: number | null;
+
   @CreatedAt
   @Column(DataType.BIGINT)
   declare createdAt: number;
@@ -80,6 +90,12 @@ export class User extends Model<User, UserCreationAttributes> {
 
   @HasMany(() => DailyGoal)
   declare dailyGoals?: DailyGoal[];
+
+  @HasMany(() => Task)
+  declare tasks?: Task[];
+
+  @HasMany(() => TaskActivity)
+  declare taskActivities?: TaskActivity[];
 
   @BeforeCreate
   static setCreatedAt(instance: User) {

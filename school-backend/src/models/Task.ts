@@ -11,9 +11,12 @@ import {
   UpdatedAt,
   BeforeCreate,
   BeforeUpdate,
+  BelongsTo,
+  HasMany,
 } from "sequelize-typescript";
 import { User } from "./User.js";
 import { Subject } from "./Subject.js";
+import { TaskActivity } from "./TaskActivity.js";
 
 export enum TaskStatus {
   PENDING = "pending",
@@ -21,8 +24,19 @@ export enum TaskStatus {
   SKIPPED = "skipped",
 }
 
-@Table({ tableName: "tasks", timestamps: true })
+@Table({ tableName: "tasks", timestamps: false })
 export class Task extends Model<Task> {
+  @BeforeCreate
+  static setCreatedAt(instance: Task) {
+    const now = Date.now();
+    instance.createdAt = now;
+    instance.updatedAt = now;
+  }
+
+  @BeforeUpdate
+  static setUpdatedAt(instance: Task) {
+    instance.updatedAt = Date.now();
+  }
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
@@ -51,7 +65,16 @@ export class Task extends Model<Task> {
   declare estimatedMinutes: number | null;
 
   @AllowNull(true)
-  @Column(DataType.BIGINT)
+  @Column({
+    type: DataType.BIGINT,
+    get() {
+      const val = this.getDataValue('dueDate');
+      return val === null ? null : Number(val);
+    },
+    set(val: number | null | undefined) {
+      this.setDataValue('dueDate', (val === null || val === undefined) ? null : Number(val));
+    },
+  })
   declare dueDate: number | null;
 
   @AllowNull(false)
@@ -59,25 +82,38 @@ export class Task extends Model<Task> {
   @Column(DataType.ENUM(...Object.values(TaskStatus)))
   declare status: TaskStatus;
 
-  @CreatedAt
-  @Column(DataType.BIGINT)
+  @Column({
+    type: DataType.BIGINT,
+    get() {
+      const val = this.getDataValue('createdAt');
+      return val === null ? null : Number(val);
+    },
+    set(val: number | undefined) {
+      this.setDataValue('createdAt', val === undefined ? Date.now() : Number(val));
+    },
+  })
   declare createdAt: number;
 
-  @UpdatedAt
-  @Column(DataType.BIGINT)
+  @Column({
+    type: DataType.BIGINT,
+    get() {
+      const val = this.getDataValue('updatedAt');
+      return val === null ? null : Number(val);
+    },
+    set(val: number | undefined) {
+      this.setDataValue('updatedAt', val === undefined ? Date.now() : Number(val));
+    },
+  })
   declare updatedAt: number;
 
-  @BeforeCreate
-  static beforeCreateHook(instance: Task) {
-    const now = Date.now();
-    instance.createdAt = now;
-    instance.updatedAt = now;
-  }
+  @BelongsTo(() => User)
+  declare user?: User;
 
-  @BeforeUpdate
-  static beforeUpdateHook(instance: Task) {
-    instance.updatedAt = Date.now();
-  }
+  @BelongsTo(() => Subject)
+  declare subject?: Subject;
+
+  @HasMany(() => TaskActivity)
+  declare activities?: TaskActivity[];
 }
 
 export default Task;

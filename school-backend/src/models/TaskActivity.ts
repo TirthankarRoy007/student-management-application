@@ -9,6 +9,7 @@ import {
   ForeignKey,
   CreatedAt,
   BeforeCreate,
+  BelongsTo,
 } from "sequelize-typescript";
 import { User } from "./User.js";
 import { Subject } from "./Subject.js";
@@ -21,7 +22,7 @@ export enum ActivityType {
   TEST = "test",
 }
 
-@Table({ tableName: "task_activity", timestamps: true, updatedAt: false })
+@Table({ tableName: "task_activity", timestamps: false })
 export class TaskActivity extends Model<TaskActivity> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -33,15 +34,24 @@ export class TaskActivity extends Model<TaskActivity> {
   @Column(DataType.UUID)
   declare userId: string;
 
+  @BelongsTo(() => User)
+  declare user?: User;
+
   @ForeignKey(() => Subject)
   @AllowNull(false)
   @Column(DataType.UUID)
   declare subjectId: string;
 
+  @BelongsTo(() => Subject)
+  declare subject?: Subject;
+
   @ForeignKey(() => Task)
   @AllowNull(true)
   @Column(DataType.UUID)
   declare taskId: string | null;
+
+  @BelongsTo(() => Task)
+  declare task?: Task;
 
   @AllowNull(false)
   @Column(DataType.ENUM(...Object.values(ActivityType)))
@@ -62,14 +72,8 @@ export class TaskActivity extends Model<TaskActivity> {
   @Column(DataType.BIGINT)
   declare activityDate: number;
 
-  @CreatedAt
   @Column(DataType.BIGINT)
   declare createdAt: number;
-
-  @BeforeCreate
-  static beforeCreateHook(instance: TaskActivity) {
-    instance.createdAt = Date.now();
-  }
 }
 
 export default TaskActivity;

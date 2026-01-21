@@ -14,8 +14,7 @@ import { User } from "./User.js";
 
 @Table({
   tableName: "daily_progress",
-  timestamps: true,
-  updatedAt: false,
+  timestamps: false,
 })
 export class DailyProgress extends Model<DailyProgress> {
   @PrimaryKey
@@ -54,7 +53,6 @@ export class DailyProgress extends Model<DailyProgress> {
   @Column(DataType.INTEGER)
   declare performanceScore: number;
 
-  @CreatedAt
   @Column(DataType.BIGINT)
   declare createdAt: number;
 

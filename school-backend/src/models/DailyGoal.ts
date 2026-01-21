@@ -47,7 +47,7 @@ type DailyGoalCreationAttributes = Omit<
 
 @Table({
   tableName: "daily_goals",
-  timestamps: true,
+  timestamps: false,
 })
 export class DailyGoal extends Model<
   DailyGoalAttributes,
@@ -80,11 +80,9 @@ export class DailyGoal extends Model<
   @Column(DataType.INTEGER)
   declare targetValue: number;
 
-  @CreatedAt
   @Column(DataType.BIGINT)
   declare createdAt: number;
 
-  @UpdatedAt
   @Column(DataType.BIGINT)
   declare updatedAt: number;
 

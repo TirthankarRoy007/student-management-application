@@ -17,6 +17,8 @@ import type { Optional } from "sequelize";
 import { User } from "./User.js";
 import { UserSubject } from "./UserSubject.js";
 import { DailyGoal } from "./DailyGoal.js";
+import { Task } from "./Task.js";
+import { TaskActivity } from "./TaskActivity.js";
 
 /**
  * DB attributes
@@ -94,6 +96,12 @@ export class Subject extends Model<
 
   @HasMany(() => DailyGoal)
   declare dailyGoals?: DailyGoal[];
+
+  @HasMany(() => Task)
+  declare tasks?: Task[];
+
+  @HasMany(() => TaskActivity)
+  declare taskActivities?: TaskActivity[];
 }
 
 export default Subject;

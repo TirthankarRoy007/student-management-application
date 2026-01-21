@@ -8,7 +8,10 @@ import authRoutes from "./routes/auth.routes.js";
 import subjectRoutes from "./routes/subject.routes.js";
 import enrollmentRoutes from "./routes/enrollment.routes.js";
 import goalRoutes from "./routes/goal.routes.js";
+import taskRoutes from "./routes/task.routes.js";
+import taskActivityRoutes from "./routes/taskActivity.routes.js";
 import userSubjectRoutes from "./routes/userSubject.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 configurePassport();
 
@@ -49,7 +52,10 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/subjects", subjectRoutes);
 app.use("/api/v1/enrollments", enrollmentRoutes);
 app.use("/api/v1/goals", goalRoutes);
+app.use("/api/v1/tasks", taskRoutes);
+app.use("/api/v1/activities", taskActivityRoutes);
 app.use("/api/v1", userSubjectRoutes);
+app.use("/api/v1/users", userRoutes);
 
 // Example: app.use("/api/v1/tasks", taskRoutes);
 
@@ -112,9 +118,12 @@ app.use(
     }
 
     // Handle unexpected errors - don't leak internal details
+    // FOR DEBUGGING: Leaking details to find the 500 cause
     res.status(500).json({
       success: false,
       message: "Internal server error",
+      debug: process.env.NODE_ENV === "development" ? (err.message || err) : undefined,
+      stack: process.env.NODE_ENV === "development" ? err.stack : undefined
     });
   }
 );
