@@ -13,7 +13,7 @@ import {
 } from "sequelize-typescript";
 import type { Optional } from "sequelize";
 import type { User } from "./User.js";
-import { Subject } from "./Subject.js";
+import type { Subject } from "./Subject.js";
 
 /**
  * DB attributes
@@ -57,7 +57,7 @@ export class UserSubject extends Model<
   @Column(DataType.UUID)
   declare userId: string;
 
-  @ForeignKey(() => Subject)
+  @ForeignKey(() => require("./Subject.js").Subject)
   @AllowNull(false)
   @Column(DataType.UUID)
   declare subjectId: string;
@@ -78,9 +78,9 @@ export class UserSubject extends Model<
 
   // Relations
   @BelongsTo(() => require("./User.js").User)
-  user!: User;
+  declare user?: User;
 
-  @BelongsTo(() => Subject)
+  @BelongsTo(() => require("./Subject.js").Subject)
   declare subject?: Subject;
 }
 

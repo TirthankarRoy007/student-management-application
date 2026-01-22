@@ -14,11 +14,13 @@ import {
   HasMany,
 } from "sequelize-typescript";
 import type { Optional } from "sequelize";
-import { User } from "./User.js";
-import { UserSubject } from "./UserSubject.js";
-import { DailyGoal } from "./DailyGoal.js";
-import { Task } from "./Task.js";
-import { TaskActivity } from "./TaskActivity.js";
+
+import type { User } from "./User.js";
+import type { UserSubject } from "./UserSubject.js";
+
+import DailyGoal from "./DailyGoal.js";
+import Task from "./Task.js";
+import TaskActivity from "./TaskActivity.js";
 
 /**
  * DB attributes
@@ -88,10 +90,14 @@ export class Subject extends Model<
   }
 
   // Relations
-  @BelongsToMany(() => User, () => UserSubject)
+
+  @BelongsToMany(
+    () => require("./User.js").User,
+    () => require("./UserSubject.js").UserSubject
+  )
   declare users?: User[];
 
-  @HasMany(() => UserSubject)
+  @HasMany(() => require("./UserSubject.js").UserSubject)
   declare userSubjects?: UserSubject[];
 
   @HasMany(() => DailyGoal)

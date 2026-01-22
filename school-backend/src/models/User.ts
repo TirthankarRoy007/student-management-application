@@ -14,11 +14,12 @@ import {
   BelongsToMany,
   HasMany,
 } from "sequelize-typescript";
+
 import DailyGoal from "./DailyGoal.js";
-import Subject from "./Subject.js";
-import UserSubject from "./UserSubject.js";
 import Task from "./Task.js";
 import TaskActivity from "./TaskActivity.js";
+import type { Subject } from "./Subject.js";
+import type { UserSubject } from "./UserSubject.js";
 
 export enum UserRole {
   STUDENT = "student",
@@ -82,10 +83,15 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column(DataType.BIGINT)
   declare updatedAt: number;
 
-  @BelongsToMany(() => Subject, () => UserSubject)
+  // Relations
+
+  @BelongsToMany(
+    () => require("./Subject.js").Subject,
+    () => require("./UserSubject.js").UserSubject
+  )
   declare subjects?: Subject[];
 
-  @HasMany(() => UserSubject)
+  @HasMany(() => require("./UserSubject.js").UserSubject)
   declare userSubjects?: UserSubject[];
 
   @HasMany(() => DailyGoal)
