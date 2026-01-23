@@ -24,6 +24,12 @@ class AuthService {
       role: UserRole.STUDENT,
     });
 
+    try {
+      await EmailService.sendWelcomeEmail(email, name);
+    } catch (error) {
+      console.error("Failed to send welcome email:", error);
+    }
+
     return { success: true };
   }
 
