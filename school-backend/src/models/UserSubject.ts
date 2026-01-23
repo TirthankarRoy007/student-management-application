@@ -12,8 +12,10 @@ import {
   BelongsTo,
 } from "sequelize-typescript";
 import type { Optional } from "sequelize";
-import type { User } from "./User.js";
-import type { Subject } from "./Subject.js";
+import { User } from "./User.js";
+import { Subject } from "./Subject.js";
+import type { User as UserType } from "./User.js";
+import type { Subject as SubjectType } from "./Subject.js";
 
 /**
  * DB attributes
@@ -52,12 +54,12 @@ export class UserSubject extends Model<
   @Column(DataType.UUID)
   declare id: string;
 
-  @ForeignKey(() => require("./User.js").User)
+  @ForeignKey(() => User)
   @AllowNull(false)
   @Column(DataType.UUID)
   declare userId: string;
 
-  @ForeignKey(() => require("./Subject.js").Subject)
+  @ForeignKey(() => Subject)
   @AllowNull(false)
   @Column(DataType.UUID)
   declare subjectId: string;
@@ -77,11 +79,11 @@ export class UserSubject extends Model<
   }
 
   // Relations
-  @BelongsTo(() => require("./User.js").User)
-  declare user?: User;
+  @BelongsTo(() => User)
+  declare user?: UserType;
 
-  @BelongsTo(() => require("./Subject.js").Subject)
-  declare subject?: Subject;
+  @BelongsTo(() => Subject)
+  declare subject?: SubjectType;
 }
 
 export default UserSubject;

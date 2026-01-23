@@ -18,8 +18,14 @@ import {
 import DailyGoal from "./DailyGoal.js";
 import Task from "./Task.js";
 import TaskActivity from "./TaskActivity.js";
-import type { Subject } from "./Subject.js";
-import type { UserSubject } from "./UserSubject.js";
+import { UserSubject } from "./UserSubject.js";
+import { Subject } from "./Subject.js";
+
+import type DailyGoalType from "./DailyGoal.js";
+import type TaskType from "./Task.js";
+import type TaskActivityType from "./TaskActivity.js";
+import type { UserSubject as UserSubjectType } from "./UserSubject.js";
+import type { Subject as SubjectType } from "./Subject.js";
 
 export enum UserRole {
   STUDENT = "student",
@@ -86,22 +92,22 @@ export class User extends Model<User, UserCreationAttributes> {
   // Relations
 
   @BelongsToMany(
-    () => require("./Subject.js").Subject,
-    () => require("./UserSubject.js").UserSubject
+    () => Subject,
+    () => UserSubject
   )
-  declare subjects?: Subject[];
+  declare subjects?: SubjectType[];
 
-  @HasMany(() => require("./UserSubject.js").UserSubject)
-  declare userSubjects?: UserSubject[];
+  @HasMany(() => UserSubject)
+  declare userSubjects?: UserSubjectType[];
 
   @HasMany(() => DailyGoal)
-  declare dailyGoals?: DailyGoal[];
+  declare dailyGoals?: DailyGoalType[];
 
   @HasMany(() => Task)
-  declare tasks?: Task[];
+  declare tasks?: TaskType[];
 
   @HasMany(() => TaskActivity)
-  declare taskActivities?: TaskActivity[];
+  declare taskActivities?: TaskActivityType[];
 
   @BeforeCreate
   static setCreatedAt(instance: User) {

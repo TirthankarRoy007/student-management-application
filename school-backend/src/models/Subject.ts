@@ -15,12 +15,17 @@ import {
 } from "sequelize-typescript";
 import type { Optional } from "sequelize";
 
-import type { User } from "./User.js";
-import type { UserSubject } from "./UserSubject.js";
-
+import { User } from "./User.js";
+import { UserSubject } from "./UserSubject.js";
 import DailyGoal from "./DailyGoal.js";
 import Task from "./Task.js";
 import TaskActivity from "./TaskActivity.js";
+
+import type { User as UserType } from "./User.js";
+import type { UserSubject as UserSubjectType } from "./UserSubject.js";
+import type DailyGoalType from "./DailyGoal.js";
+import type TaskType from "./Task.js";
+import type TaskActivityType from "./TaskActivity.js";
 
 /**
  * DB attributes
@@ -92,22 +97,22 @@ export class Subject extends Model<
   // Relations
 
   @BelongsToMany(
-    () => require("./User.js").User,
-    () => require("./UserSubject.js").UserSubject
+    () => User,
+    () => UserSubject
   )
-  declare users?: User[];
+  declare users?: UserType[];
 
-  @HasMany(() => require("./UserSubject.js").UserSubject)
-  declare userSubjects?: UserSubject[];
+  @HasMany(() => UserSubject)
+  declare userSubjects?: UserSubjectType[];
 
   @HasMany(() => DailyGoal)
-  declare dailyGoals?: DailyGoal[];
+  declare dailyGoals?: DailyGoalType[];
 
   @HasMany(() => Task)
-  declare tasks?: Task[];
+  declare tasks?: TaskType[];
 
   @HasMany(() => TaskActivity)
-  declare taskActivities?: TaskActivity[];
+  declare taskActivities?: TaskActivityType[];
 }
 
 export default Subject;

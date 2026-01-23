@@ -15,6 +15,8 @@ import {
 } from "sequelize-typescript";
 import { User } from "./User.js";
 import { Subject } from "./Subject.js";
+import type { User as UserType } from "./User.js";
+import type { Subject as SubjectType } from "./Subject.js";
 
 export enum GoalTargetType {
   TASK_COUNT = "task_count",
@@ -100,10 +102,10 @@ export class DailyGoal extends Model<
 
   // Relations
   @BelongsTo(() => User)
-  declare user?: User;
+  declare user?: UserType;
 
   @BelongsTo(() => Subject)
-  declare subject?: Subject;
+  declare subject?: SubjectType;
 }
 
 export default DailyGoal;

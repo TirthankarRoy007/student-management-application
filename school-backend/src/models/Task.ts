@@ -17,6 +17,9 @@ import {
 import { User } from "./User.js";
 import { Subject } from "./Subject.js";
 import { TaskActivity } from "./TaskActivity.js";
+import type { User as UserType } from "./User.js";
+import type { Subject as SubjectType } from "./Subject.js";
+import type { TaskActivity as TaskActivityType } from "./TaskActivity.js";
 
 export enum TaskStatus {
   PENDING = "pending",
@@ -107,13 +110,13 @@ export class Task extends Model<Task> {
   declare updatedAt: number;
 
   @BelongsTo(() => User)
-  declare user?: User;
+  declare user?: UserType;
 
   @BelongsTo(() => Subject)
-  declare subject?: Subject;
+  declare subject?: SubjectType;
 
   @HasMany(() => TaskActivity)
-  declare activities?: TaskActivity[];
+  declare activities?: TaskActivityType[];
 }
 
 export default Task;

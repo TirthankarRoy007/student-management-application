@@ -14,6 +14,9 @@ import {
 import { User } from "./User.js";
 import { Subject } from "./Subject.js";
 import { Task } from "./Task.js";
+import type { User as UserType } from "./User.js";
+import type { Subject as SubjectType } from "./Subject.js";
+import type { Task as TaskType } from "./Task.js";
 
 export enum ActivityType {
   TASK_COMPLETED = "task_completed",
@@ -35,7 +38,7 @@ export class TaskActivity extends Model<TaskActivity> {
   declare userId: string;
 
   @BelongsTo(() => User)
-  declare user?: User;
+  declare user?: UserType;
 
   @ForeignKey(() => Subject)
   @AllowNull(false)
@@ -43,7 +46,7 @@ export class TaskActivity extends Model<TaskActivity> {
   declare subjectId: string;
 
   @BelongsTo(() => Subject)
-  declare subject?: Subject;
+  declare subject?: SubjectType;
 
   @ForeignKey(() => Task)
   @AllowNull(true)
@@ -51,7 +54,7 @@ export class TaskActivity extends Model<TaskActivity> {
   declare taskId: string | null;
 
   @BelongsTo(() => Task)
-  declare task?: Task;
+  declare task?: TaskType;
 
   @AllowNull(false)
   @Column(DataType.ENUM(...Object.values(ActivityType)))
